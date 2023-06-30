@@ -2,7 +2,10 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
-const { dbConnect } = require('./database/db');
+const { dbConnect, sequelize } = require('./database/db');
+const app = express()
+
+// modelos
 
 app.use(morgan("dev"));
 app.use(express.json());
