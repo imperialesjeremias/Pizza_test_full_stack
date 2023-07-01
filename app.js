@@ -4,13 +4,30 @@ const cors = require('cors');
 const { Sequelize } = require('sequelize');
 const { dbConnect, sequelize } = require('./database/db');
 const app = express()
-
-// modelos
+const apiRouter = express.Router();
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors('*'))
+
+// routes
+const pizzasRoutes
+const ingredientesRoutes
+const usuariosRoutes
+
+// modelos
+const {ingredientes} = require('./models/ingredientes')
+const {pizza} = require('./models/pizza');
+const {usuario} = require('./models/usuario')
+
+
+// endponts
 app.use('/api');
+apiRouter.use('/pizzas',);
+apiRouter.use('/ingredientes',);
+apiRouter.use('/auth',);
+
+
 
 
 app.listen(3000, () => {
