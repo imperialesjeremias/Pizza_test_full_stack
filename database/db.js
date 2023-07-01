@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
 const dbHost = process.env.DB_HOST || 'localhost';
@@ -10,7 +10,7 @@ const dbName = process.env.DB_NAME || 'test_backend';
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
     dbHost,
     dbPort,
-    dialect: "mysql",
+    dialect: 'mysql',
 });
 
 const dbConnect = async () => {

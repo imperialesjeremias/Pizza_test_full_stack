@@ -2,8 +2,8 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/db');
 
 const CATEGORIAS = [
-    {label:"Basico", value: "Basico"},
-    {label: "Premium", value: 'Premium'},
+    {label:'Basico', value: 'Basico'},
+    {label: 'Premium', value: 'Premium'},
 ];
 
 const ingredientes = sequelize.define(

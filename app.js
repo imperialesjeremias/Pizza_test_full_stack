@@ -10,10 +10,14 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors('*'))
 
+// swaggerr
+const swaggerUi = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
+
 // routes
-const pizzasRoutes
-const ingredientesRoutes
-const usuariosRoutes
+const pizzasRoutes = require('./routes/pizza.routes');
+const ingredientesRoutes = require('./routes/ingredientes.routes');
+const usuariosRoutes = require('./routes/usuario.routes');
 
 // modelos
 const {ingredientes} = require('./models/ingredientes')
@@ -22,13 +26,26 @@ const {usuario} = require('./models/usuario')
 
 
 // endponts
-app.use('/api');
-apiRouter.use('/pizzas',);
-apiRouter.use('/ingredientes',);
-apiRouter.use('/auth',);
+app.use('/api', apiRouter);
+apiRouter.use('/pizzas',pizzasRoutes);
+apiRouter.use('/ingredientes',ingredientesRoutes);
+apiRouter.use('/auth',usuariosRoutes);
 
 
-
+// configuracion del swagger
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'API documentation',
+            version: '1.0.0',
+            description: 'Test Fullstack'
+        },
+    },
+    apis: ['./routes/pizza.routes.js', './routes/ingredientes.routes.js', './routes/usuario.routes.js'],  
+};
+const swaggerSpec = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(3000, () => {
     Sequelize.afterSync({force: false}).then(() => {
