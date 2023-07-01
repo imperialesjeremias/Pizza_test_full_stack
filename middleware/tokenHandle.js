@@ -1,3 +1,4 @@
+
 const usuario = require('../models/usuario');
 const { sign, verify, decode } = require('jsonwebtoken');
 const { comparePass } = require('./encryptPass');

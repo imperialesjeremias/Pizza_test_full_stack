@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const authController = require('../controllers/usuario.controller')
+const router = Router();
 /**
  * @swagger
  * /login:

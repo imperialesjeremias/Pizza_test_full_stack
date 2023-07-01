@@ -48,7 +48,8 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(3000, () => {
-    Sequelize.afterSync({force: false}).then(() => {
+    // fix por nueva version de sequelize
+    sequelize.sync({force: true}).then(() => {
         console.log(`Server running on port https://localhost:3000`);
     });
     // conectar la base de datos
