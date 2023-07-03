@@ -13,6 +13,7 @@ const ingredienteController = {
   },
   getById: async (request, response) => {
     try {
+      const ingredienteId = request.params.id
       const result = await ingredientes.findByPk(ingredienteId);
       if (!ingredientes)
         return response.status(404).json({ msg: 'Ingrediente no Encontrado' });
