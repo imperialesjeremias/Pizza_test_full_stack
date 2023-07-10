@@ -61,6 +61,32 @@ export const IngredientesForm = () => {
     }, [params.id]);
 
     return (
-        
-    )
-}
+        <div>
+            <Formik initialValues={ing} enableReinitialize={true} onSubmit={async(values, actions) => {
+                if (params.id) {
+                    await handleUpdate(params.id, values);
+                    navigate("/ingredientes");
+                } else {
+                    await handleCreate(values);
+                }
+                actions.resetForm();
+            }}>
+                {({values, handleChange, handleSubmit, isSubmitting}) => (
+                    <Form onSubmit={handleSubmit}>
+                        <div>
+                            <Input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={values.nombre}/>
+                            <select name="categoria" onChange={handleChange} value={values.categoria}>
+                                <option value="">Seleccione una categoria</option>
+                                <option value="Basico">Basico</option>
+                                <option value="Premium">Premium</option>
+                            </select>
+                            <button type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? "Guardando" : "Guardar"}
+                            </button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        </div>
+    );
+};
