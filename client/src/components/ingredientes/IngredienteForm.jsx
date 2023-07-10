@@ -3,9 +3,9 @@ import { Formik, Form } from "formik";
 import { fetchIngredientes } from "../../feactures/ingredientes/ingredientesSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import {useParamas, useNavigate, useLocation} from "react-router-dom";
+import {useParams, useNavigate, useLocation} from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getIgrediente, updatedIngrediente } from "../../api/ingrediente";
+import { getIngrediente, updatedIngrediente } from "../../api/ingrediente";
 import { verify } from "../../checkType/verify";
 
 export const IngredientesForm = () => {
@@ -15,7 +15,7 @@ export const IngredientesForm = () => {
     });
 
     const dispatch = useDispatch();
-    const params = useParamas();
+    const params = useParams();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export const IngredientesForm = () => {
     useEffect(() => {
         const loadIng = async () => {
             if (isEditPage) {
-                const res = await getIgrediente(params.id);
+                const res = await getIngrediente(params.id);
                 setIng({
                     nombre: res.data.result.nombre,
                     categoria: res.data.result.categoria,

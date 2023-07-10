@@ -26,7 +26,7 @@ export const createPizza = createAsyncThunk(
     }
 );
 
-export const addIngrediente = createAsyncThunk(
+export const addIngredientes = createAsyncThunk(
     "pizzas/addIngrediente",
     async (pizzaId, ingredienteId) => {
         const res = await addIngrediente(pizzaId, ingredienteId);

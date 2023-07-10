@@ -6,7 +6,7 @@ import axios from "axios";
 import {fetchPizzaDetalle} from "../../feactures/pizzas/pizzasSlice";
 import { verify } from "../../checkType/verify";
 
-export const ingredientesAdd = () => {
+export const IngredientesAdd = () => {
     const dispatch = useDispatch();
     const {id} = useParams();
     const ingrediente = useSelector((state) => state.ingredientes);
