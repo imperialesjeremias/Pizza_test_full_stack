@@ -7,6 +7,7 @@ import IngredientesList from "./src/components/ingredientes/IngredientesList";
 import { IngredientesForm } from "./src/components/ingredientes/IngredienteForm";
 import { PizzasDetail } from "./src/pages/PizzasDetail";
 import PizzasForm from "./src/pages/PizzasForm";
+import { Register } from "./src/pages/Register";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
         <Route path="/pizzas/:id" element={<PizzasDetail/>} />
         <Route path="/pizzas/edit/:id" element={<PizzasForm/>} />
         <Route path="/pizzas/new" element={<PizzasForm/>} />
+        <Route path="/register" element={<Register/>} />
       </Routes>
     </>
   );
