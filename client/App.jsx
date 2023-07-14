@@ -19,9 +19,10 @@ function App() {
         <Route path="/ingredientes" element={<IngredientesList />} />
         <Route path="/edit/ingredientes/:id" element={<IngredientesForm/>} />
         <Route path="/pizzas/:id" element={<PizzasDetail/>} />
-        <Route path="/pizzas/edit/:id" element={<PizzasForm/>} />
-        <Route path="/pizzas/new" element={<PizzasForm/>} />
+        {/* <Route path="/pizzas/edit/:id" element={<PizzasForm/>} /> */}
+        {/* <Route path="/pizzas/new" element={<PizzasForm/>} /> */}
         <Route path="/register" element={<Register/>} />
+        <Route path="/ingredientes/new" element={<IngredientesForm/>} />
       </Routes>
     </>
   );

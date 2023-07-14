@@ -17,8 +17,8 @@ const IngredientesList = () => {
             dispatch(console.log("succes", "Ingrediente eliminado"))
             dispatch(fetchIngredientes());
         } catch (error) {
-            if(error.response.status === 409) dispatch(console.log("error", "Ingrediente en uso"))
-            if (error.response.status === 401) dispatch(console.log("error", "No estas autorizado para realizar esta acción"));
+            if( error.response && error.response.status === 409) dispatch(console.log("error", "Ingrediente en uso"))
+            if (error.response && error.response.status === 401) dispatch(console.log("error", "No estas autorizado para realizar esta acción"));
             dispatch(fetchIngredientes());
         }
     };
@@ -37,7 +37,7 @@ const IngredientesList = () => {
                 <div>
                     {ingrediente && ingrediente.length > 0 ? (
                         ingrediente.map((ingredient, i) => (
-                            <div>
+                            <div key={i}>
                                 <div>
                                     <h1>Nombre: {ingredient.nombre}</h1>
                                     <h2>{ingredient.categoria}</h2>

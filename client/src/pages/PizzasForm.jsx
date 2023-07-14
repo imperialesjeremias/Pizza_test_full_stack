@@ -1,5 +1,5 @@
 import { Input } from "@nextui-org/react";
-import { Form, Formik } from "formik";
+// import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -64,7 +64,7 @@ const PizzasForm = () => {
         <>
             <div>
                 <div>
-                    <Formik initialValues={pizza} enableReinitialize={true} onSubmit={async (values, action) => {
+                    <Formik aria-label="Formulario de pizzas" initialValues={pizza} enableReinitialize={true} onSubmit={async (values, action) => {
                         if (params.id) {
                             await handleUpdatePizza(params.id, values);
                         } else {
@@ -75,8 +75,10 @@ const PizzasForm = () => {
                         {({values,handleChange, handleBlur, handleSubmit, isSubmitting,}) => (
                             <Form onSubmit={handleSubmit}>
                                 <div>
-                                    <Input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={values.nombre}/>
-                                    <Input type="text" name="precio" placeholder="Precio" onChange={handleChange} value={values.precio}/>
+                                    <label htmlFor="nombre"></label>
+                                    <Input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={values.nombre} aria-label="Nombre"/>
+                                    <label htmlFor="precio"></label>
+                                    <Input type="text" name="precio" placeholder="Precio" onChange={handleChange} value={values.precio} aria-label="Precio"/>
                                     <select name="estado" onChange={handleChange} value={values.estado}>
                                         <option value="" disabled> Seleccione el estado</option>
                                         <option value="Activo">Activo</option>

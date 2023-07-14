@@ -8,19 +8,17 @@ import {
 } from "../feactures/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 
 
-export const  Login = () => {
-
-  const loginSchema = Yup.object().shape({
-    nombre: Yup.string()
-      .min(3, "Minimo de caracteres")
-      .required("El usuario es obligatorio"),
-    password: Yup.string()
-      .min(3, "Minimo de caracteres")
-      .required("La contraseña es obligatoria"),
+export const  Login = () => {  
+  const { register, handleSubmit, formState: { errors },} = useForm({
+    resolver: yupResolver(Yup.object().shape({
+      nombre: Yup.string().required("El correo electronico es obligatorio"),
+      password: Yup.string().required("La contraseña es obligatoria")
+    }))
   });
-  // Agregar Formik por el form normal
 
   const [auth, setAuth] = useState("");
   const [nombre, setNombre] = useState("");
@@ -38,32 +36,31 @@ export const  Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => { 
     if (!auth) {
-      dispatch(console.log("error", "Seleccione el tipo de autenticación"));
+      console.log("error", "Seleccione el tipo de autenticación");
       return;
     } else if (!nombre || !password) {
-      dispatch(console.log("error", "ingrese usuario y contraseña"));
+      console.log("error", "ingrese usuario y contraseña");
       return;
     } else {
       if (!nombre && !password) {
-        return console.log("campos incompletos");
+        // return console.log("campos incompletos");
       }
       try {
         if (auth === "jwt") {
           const res = await dispatch(login({ nombre, password }));
           if (res.error && res.error.code === "ERR_BAD_REQUEST")
-            dispatch(console.log("error", "usuario o contraseña incorrectos"));
+            console.log("error", "usuario o contraseña incorrectos");
           dispatch(setAuthData(res.payload));
         } else if (auth === "basic") {
           const res = await dispatch(loginBasic({ nombre, password }));
           if (res.error && res.error.code === "ERR_BAD_REQUEST")
-            dispatch(console.log("error", "usuario o contraseña incorrectos"));
+            console.log("error", "usuario o contraseña incorrectos");
           dispatch(setAuthBasic(res.payload));
         }
         navigate("/");
-        dispatch(console.log("Succes", "Usuario autenticado correctamente"));
+        console.log("Succes", "Usuario autenticado correctamente");
       } catch (error) {
         console.log("error", "internal server error");
       }
@@ -75,12 +72,12 @@ export const  Login = () => {
       <div>
         <div>
           <h1>Ingrese sus credenciales</h1>
-          <form>
+          <form onSubmit={handleSubmit(handleLogin)}>
             <div>
               <label htmlFor="nombre">Ingrese tu usuario</label>
               <input
                 type="text"
-                name="nombre"
+                {...register("nombre")}
                 placeholder="Escribe tu usuario"
                 onChange={handleUsuarioChange}
                 required=""
@@ -90,7 +87,7 @@ export const  Login = () => {
               <label htmlFor="password">Ingrese tu contraseña</label>
               <input
                 type="password"
-                name="password"
+                {...register("password")}
                 onChange={handlePasswordChange}
                 required=""
               />
@@ -102,6 +99,7 @@ export const  Login = () => {
                     type="checkbox"
                     id="basic-auth"
                     value="basic"
+                    {...register("basic-auth")}
                     onChange={handleAuth}
                     checked={auth === "basic"}
                     required=""
@@ -116,7 +114,7 @@ export const  Login = () => {
                   <input
                     type="checkbox"
                     value="jwt"
-                    name="auth"
+                    {...register("auth")}
                     onChange={handleAuth}
                     checked={auth === "jwt"}
                     required=""
@@ -129,9 +127,7 @@ export const  Login = () => {
             </div>
             <button
               type="submit"
-              onClick={(e) => {
-                handleLogin(e);
-              }}
+
             >
               Sign In
             </button>

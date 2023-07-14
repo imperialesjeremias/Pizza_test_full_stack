@@ -29,6 +29,9 @@ function Pizzas() {
               >
                 Add Pizza
               </button>
+              <button onClick={() => navigate("/ingredientes/new")}>
+                Agregar Ingrediente
+              </button>
               <button
                 onClick={() => navigate("/ingredientes")}
                 disabled={isAuth === "false"}

@@ -1,92 +1,112 @@
-import {Input} from "@nextui-org/react";
-import { Formik, Form } from "formik";
 import { fetchIngredientes } from "../../feactures/ingredientes/ingredientesSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import {useParams, useNavigate, useLocation} from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getIngrediente, updatedIngrediente } from "../../api/ingrediente";
 import { verify } from "../../checkType/verify";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 
 export const IngredientesForm = () => {
-    const [ing, setIng] = useState({
-        nombre: "",
-        categoria: "",
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(
+      Yup.object().shape({
+        nombre: Yup.string().required("El nombre es obligatorio"),
+        categoria: Yup.string().required("Seleccione una categoría"),
+      })
+    ),
+  });
 
-    const dispatch = useDispatch();
-    const params = useParams();
-    const location = useLocation();
-    const navigate = useNavigate();
+  const [ing, setIng] = useState({
+    nombre: "",
+    categoria: "",
+  });
 
-    const isEditPage = location.pathname.icludes("/edit");
+  const dispatch = useDispatch();
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const handleCreate = async (values) => {
-        const token = localStorage.getItem("token");
-        const basicToken = localStorage.getItem("basicToken");
-        const headers = {
-            Accept: "application/json",
-            Authorization: verify(basicToken, token)
-        }
-        try {
-            await axios.post(`http://localhost:3000/api/ingredientes`, values, {headers});
-            dispatch(fetchIngredientes());
-        } catch (error) {
-            dispatch(console.log("error", "internal server error"));
-        }
+  const isEditPage = location.pathname.includes("/edit");
+
+  const handleCreate = async (values) => {
+    const token = localStorage.getItem("token");
+    const basicToken = localStorage.getItem("basicToken");
+    const headers = {
+      Accept: "application/json",
+      Authorization: verify(basicToken, token),
     };
+    try {
+      await axios.post(`http://localhost:3000/api/ingredientes`, values, {
+        headers,
+      });
+      dispatch(fetchIngredientes());
+      console.log("Succes ingrediente agregado");
+      navigate("/ingredientes");
+    } catch (error) {
+      console.log("error", "internal server error");
+    }
+  };
 
-    const handleUpdate = async (id, values) => {
-        try {
-            await updatedIngrediente(id, value);
-            dispatch(console.log("success", "Ingrediente actualizado"))
-            navigate("/ingredientes");
-        } catch (error) {
-            if (error.response.status === 401)
-            dispatch(console.log("error", "No estas autorizado para realizar esta acción"));
-        }
+  const handleUpdate = async (id, values) => {
+    try {
+      await updatedIngrediente(id, values);
+      console.log("success", "Ingrediente actualizado");
+      navigate("/ingredientes");
+    } catch (error) {
+      if (error.response && error.response.status === 401)
+        console.log("error", "No estas autorizado para realizar esta acción");
+    }
+  };
+
+  useEffect(() => {
+    const loadIng = async () => {
+      if (isEditPage) {
+        const res = await getIngrediente(params.id);
+        setIng({
+          nombre: res.data.result.nombre,
+          categoria: res.data.result.categoria,
+        });
+        setValue("nombre", res.data.result.nombre);
+        setValue("categoria", res.data.result.categoria);
+      }
     };
+    loadIng();
+  }, [params.id, isEditPage, setValue]);
 
-    useEffect(() => {
-        const loadIng = async () => {
-            if (isEditPage) {
-                const res = await getIngrediente(params.id);
-                setIng({
-                    nombre: res.data.result.nombre,
-                    categoria: res.data.result.categoria,
-                });
-            }
-        };
-        loadIng();
-    }, [params.id]);
+  const onSubmit = (data) => {
+    if (isEditPage) {
+      handleUpdate(params.id, data);
+    } else {
+      handleCreate(data);
+    }
+  };
 
-    return (
-        <div>
-            <Formik initialValues={ing} enableReinitialize={true} onSubmit={async(values, actions) => {
-                if (params.id) {
-                    await handleUpdate(params.id, values);
-                    navigate("/ingredientes");
-                } else {
-                    await handleCreate(values);
-                }
-                actions.resetForm();
-            }}>
-                {({values, handleChange, handleSubmit, isSubmitting}) => (
-                    <Form onSubmit={handleSubmit}>
-                        <div>
-                            <Input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={values.nombre}/>
-                            <select name="categoria" onChange={handleChange} value={values.categoria}>
-                                <option value="">Seleccione una categoria</option>
-                                <option value="Basico">Basico</option>
-                                <option value="Premium">Premium</option>
-                            </select>
-                            <button type="submit" disabled={isSubmitting}>
-                                {isSubmitting ? "Guardando" : "Guardar"}
-                            </button>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
-        </div>
-    );
+  return (
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="text"
+          {...register("nombre")}
+          placeholder="Nombre"
+          defaultValue={ing.nombre}
+        />
+        {errors.nombre && <p>{errors.nombre.message}</p>}
+        <select {...register("categoria")} defaultValue={ing.categoria}>
+          <option value="">Seleccione una categoría</option>
+          <option value="Basico">Básico</option>
+          <option value="Premium">Premium</option>
+        </select>
+        {errors.categoria && <p>{errors.categoria.message}</p>}
+        <button type="submit">Add</button>
+      </form>
+    </div>
+  );
 };
