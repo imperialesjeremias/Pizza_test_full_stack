@@ -19,22 +19,27 @@ const PizzasForm = () => {
     const handleCreatePizza = async (values) => {
         try {
             await createPizza(values);
-            dispatch(console.log("succes", "Pizza creada correctamente"));
+            // dispatch(console.log("succes", "Pizza creada correctamente"));
+            console.log("Pizza creada", values)
             navigate("/");
         } catch (error) {
             if (error.res.status === 401)
-            dispatch(console.log("error", "No estas autorizado para realizar esta acción"));
+            // dispatch(console.log("error", "No estas autorizado para realizar esta acción"));
+            console.log(error)
         }
     };
 
     const handleUpdatePizza = async (id, values) => {
         try {
             await updatePizza(id, values);
-            dispatch(console.log("succes", "Pizza actualizada correctamente"));
+            // dispatch(console.log("succes", "Pizza actualizada correctamente"));`
+            console.log("Pizza acutalizada", id, values)
             navigate("/");
         } catch (error) {
-            if (error.res.status === 401)
-            dispatch(console.log("error", "No estas autorizado para realizar esta acción"));
+            if (error.res.status === 401) 
+            console.log(error)
+            
+            // dispatch(console.log("error", "No estas autorizado para realizar esta acción"));
         }
     };
 
@@ -71,7 +76,7 @@ const PizzasForm = () => {
                             <Form onSubmit={handleSubmit}>
                                 <div>
                                     <Input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={values.nombre}/>
-                                    <Input type="text" name="precio" placeholder="Precio" value={values.precio}/>
+                                    <Input type="text" name="precio" placeholder="Precio" onChange={handleChange} value={values.precio}/>
                                     <select name="estado" onChange={handleChange} value={values.estado}>
                                         <option value="" disabled> Seleccione el estado</option>
                                         <option value="Activo">Activo</option>

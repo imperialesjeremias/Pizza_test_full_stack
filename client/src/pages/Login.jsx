@@ -7,8 +7,21 @@ import {
   setAuthBasic,
 } from "../feactures/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
-export const Login = () => {
+
+export const  Login = () => {
+
+  const loginSchema = Yup.object().shape({
+    nombre: Yup.string()
+      .min(3, "Minimo de caracteres")
+      .required("El usuario es obligatorio"),
+    password: Yup.string()
+      .min(3, "Minimo de caracteres")
+      .required("La contraseña es obligatoria"),
+  });
+  // Agregar Formik por el form normal
+
   const [auth, setAuth] = useState("");
   const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
@@ -34,6 +47,9 @@ export const Login = () => {
       dispatch(console.log("error", "ingrese usuario y contraseña"));
       return;
     } else {
+      if (!nombre && !password) {
+        return console.log("campos incompletos");
+      }
       try {
         if (auth === "jwt") {
           const res = await dispatch(login({ nombre, password }));
@@ -61,12 +77,12 @@ export const Login = () => {
           <h1>Ingrese sus credenciales</h1>
           <form>
             <div>
-              <label htmlFor="email">Ingrese tu usuario</label>
+              <label htmlFor="nombre">Ingrese tu usuario</label>
               <input
                 type="text"
                 name="nombre"
                 placeholder="Escribe tu usuario"
-                onChange={handlePasswordChange}
+                onChange={handleUsuarioChange}
                 required=""
               />
             </div>
