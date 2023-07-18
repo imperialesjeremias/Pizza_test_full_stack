@@ -107,6 +107,7 @@ export const IngredientesForm = () => {
         {errors.categoria && <p>{errors.categoria.message}</p>}
         <button type="submit">Add</button>
       </form>
+      {!params.id ? "Cree un ingrediente" : "Edite el ingrediente"}
     </div>
   );
 };

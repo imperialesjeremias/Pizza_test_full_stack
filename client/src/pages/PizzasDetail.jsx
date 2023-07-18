@@ -57,6 +57,7 @@ export const PizzasDetail = () => {
                             }
                         </ul>
                     </div>
+
                 ) : (
                     <p>No hay ingredientes disponibles</p>
                 )}

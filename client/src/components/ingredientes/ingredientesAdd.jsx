@@ -18,10 +18,10 @@ export const IngredientesAdd = () => {
     };
     const handleAgregarClick = async () => {
         try {
-            await axios.post(`http://localhost:3000/api/pizzas/${id}/igredientes/${selectedIngrediente}`);
+            await axios.post(`http://localhost:3000/api/pizzas/${id}/ingredientes/${selectedIngrediente}`);
             dispatch(fetchPizzaDetalle(id));
         } catch (error) {
-            dispatch(console.log("error", "Internal Server Error"));
+            console.log("error", "Internal Server Error");
         }
     };
 
