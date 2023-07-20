@@ -55,8 +55,12 @@ const authController = {
     if (!nombre || !password || !tipo) {
       return res.status(400).json({ msg: "Debe llenar todos los campos" });
     }
-    const newPassword = encryptPass(password);
     try {
+      const existingUser = await usuario.findOne({ where: { nombre } });
+      if (existingUser) {
+        return res.status(401).json({ msg: "El usuario ya existe" });
+      }
+      const newPassword = encryptPass(password);
       const user = await usuario.create({
         nombre,
         password: newPassword,
