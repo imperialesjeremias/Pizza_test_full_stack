@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 export const Register = () => {
   const registerSchema = Yup.object().shape({
@@ -16,6 +17,7 @@ export const Register = () => {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (values) => {
     try {
@@ -24,11 +26,14 @@ export const Register = () => {
         values
       );
       console.log("succers", res);
-      // dispatch(console.log("succes", "Usuario Registrado"));
       navigate("/login");
     } catch (error) {
-      // dispatch(console.log('error', "error al registrar usuario"));
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.msg) {
+        setErrorMessage(error.response.data.msg);
+      } else {
+        setErrorMessage("Error al registrar al usuario");
+      }
+      console.log("Error al enviar la solicitud", error.message);
     }
   };
 
@@ -61,6 +66,7 @@ export const Register = () => {
             </select>
             <button type="submit">Registrar</button>
           </form>
+          {errorMessage && <p>{errorMessage}</p>}
         </div>
       </div>
     </div>

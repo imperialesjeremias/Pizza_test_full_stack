@@ -8,6 +8,7 @@ import { IngredientesForm } from "./src/components/ingredientes/IngredienteForm"
 import { PizzasDetail } from "./src/pages/PizzasDetail";
 import PizzasForm from "./src/pages/PizzasForm";
 import { Register } from "./src/pages/Register";
+import "./index.css";
 function App() {
   return (
     <>

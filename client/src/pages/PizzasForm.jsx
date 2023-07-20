@@ -5,6 +5,7 @@ import { updatePizza, getPizza, createPizza } from "../api/pizzas";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import "../../index.css";
 
 const PizzasForm = () => {
   const {
@@ -84,10 +85,10 @@ const PizzasForm = () => {
 
   return (
     <>
-      <div>
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
+      <div className="flex justify-center">
+        <div className="bg-gray-200 rounded-lg shadow-lg shadow-gray300 p-8 h-4/6 w-4/12 m-auto py-10 px-10 mt-24">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div className="flex flex-col gap-4 sm:grid-cols-2 w-full">
               <label htmlFor="nombre"></label>
               <input
                 type="text"
@@ -96,6 +97,7 @@ const PizzasForm = () => {
                 aria-label="Nombre"
                 id="nombre"
                 defaultValue={pizza.nombre}
+                className="mt-1 block w-full border-0 p-2"
               />
               {errors.nombre && <p>{errors.nombre.message}</p>}
               <label htmlFor="precio"></label>
@@ -106,6 +108,7 @@ const PizzasForm = () => {
                 aria-label="Precio"
                 id="precio"
                 defaultValue={pizza.precio}
+                className="mt01 block w-full border-0 p-2"
               />
               {errors.precio && <p>{errors.precio.message}</p>}
               <label htmlFor="estado"></label>
@@ -113,8 +116,9 @@ const PizzasForm = () => {
                 id="estado"
                 {...register("estado")}
                 defaultValue={pizza.estado}
+                className="bg-gray-50 border p-2 border-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                <option value="" disabled>
+                <option value="" disabled className="text-black">
                   {" "}
                   Seleccione el estado
                 </option>
@@ -123,9 +127,9 @@ const PizzasForm = () => {
               </select>
               {errors.estado && <p>{errors.estado.message}</p>}
             </div>
-            <button type="submit">{params.id ? "Actualizar" : "Crear"}</button>
+            <button type="submit" className="block bg-indigo-500 px-2 py-1 mt-5 hover:bg-indigo-400 text-white w-full rounded-md">{params.id ? "Actualizar" : "Crear"}</button>
           </form>
-          {!params.id ? "Cree una pizza" : "Edite la pizza"}
+          {!params.id ? <p className="ml-20 mt-3">Cree una pizza</p> : <p className="ml-20 mt-3">Edite la pizza</p>}
         </div>
       </div>
     </>

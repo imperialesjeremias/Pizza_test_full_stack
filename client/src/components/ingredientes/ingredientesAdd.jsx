@@ -32,9 +32,9 @@ export const IngredientesAdd = () => {
     return (
         <div>
             <div>
-                <h1>Ingrediente</h1>
+                <h1 className="text-lg mb-3">Ingrediente</h1>
                 <form>
-                    <select value={selectedIngrediente} onChange={handleIngredienteChange}>
+                    <select value={selectedIngrediente} onChange={handleIngredienteChange} className="bg-gray-50 border p-2 border-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">Seleccionar Ingrediente</option>
                         {ingrediente &&
                         ingrediente.result &&
@@ -47,7 +47,7 @@ export const IngredientesAdd = () => {
                         )}
                     </select>
                 </form>
-                <button onClick={handleAgregarClick} disabled={!selectedIngrediente || isAuth === "false"}>
+                <button onClick={handleAgregarClick} disabled={!selectedIngrediente || isAuth === "false"} className="block bg-indigo-500 p-2 mt-5 hover:bg-indigo-400 text-white rounded-md">
                     Agregar
                 </button>
             </div>

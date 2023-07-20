@@ -45,7 +45,7 @@ export const  Login = () => {
       return;
     } else {
       if (!nombre && !password) {
-        // return console.log("campos incompletos");
+        return console.log("campos incompletos");
       }
       try {
         if (auth === "jwt") {
